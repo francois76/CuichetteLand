@@ -1,3 +1,7 @@
+cuichette_landwebsite:
+    resource: "@CuichetteLandwebsiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

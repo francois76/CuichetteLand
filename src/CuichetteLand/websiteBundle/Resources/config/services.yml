@@ -1,0 +1,4 @@
+services:
+#    cuichette_landwebsite.example:
+#        class: CuichetteLand\websiteBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
