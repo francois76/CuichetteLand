@@ -1,8 +1,7 @@
 CuichetteLand
 =============
 
-Identifiant de la BDD: CuichetteLand
-MDP: CuichetteLand
+Commande à executer avant d'executer le projet: php composer.phar update
 
 =============
 Le template utilisé est dispo ici: https://html5up.net/landed/download
