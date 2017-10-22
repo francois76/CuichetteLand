@@ -2,20 +2,20 @@
 
 namespace Doctrine\Tests\Common\Inflector;
 
-use Doctrine\Tests\DoctrineTestCase;
 use Doctrine\Common\Inflector\Inflector;
+use PHPUnit\Framework\TestCase;
 
-class InflectorTest extends DoctrineTestCase
+class InflectorTest extends TestCase
 {
     /**
      * Singular & Plural test data. Returns an array of sample words.
      *
      * @return array
-     */ 
-    public function dataSampleWords() 
+     */
+    public function dataSampleWords()
     {
         Inflector::reset();
-        
+
         // In the format array('singular', 'plural')
         return array(
             array('', ''),
@@ -32,6 +32,7 @@ class InflectorTest extends DoctrineTestCase
             array('bureau', 'bureaus'),
             array('bus', 'buses'),
             array('Bus', 'Buses'),
+            array('cache', 'caches'),
             array('cactus', 'cacti'),
             array('cafe', 'cafes'),
             array('calf', 'calves'),
@@ -69,6 +70,7 @@ class InflectorTest extends DoctrineTestCase
             array('foot', 'feet'),
             array('fungus', 'fungi'),
             array('glove', 'gloves'),
+            array('gulf', 'gulfs'),
             array('half', 'halves'),
             array('hero', 'heroes'),
             array('hippopotamus', 'hippopotami'),
@@ -80,6 +82,7 @@ class InflectorTest extends DoctrineTestCase
             array('iris', 'irises'),
             array('kiss', 'kisses'),
             array('knife', 'knives'),
+            array('larva', 'larvae'),
             array('leaf', 'leaves'),
             array('life', 'lives'),
             array('loaf', 'loaves'),
@@ -96,11 +99,13 @@ class InflectorTest extends DoctrineTestCase
             array('mouse', 'mice'),
             array('neurosis', 'neuroses'),
             array('news', 'news'),
+            array('niveau', 'niveaux'),
             array('NodeMedia', 'NodeMedia'),
             array('nucleus', 'nuclei'),
             array('oasis', 'oases'),
             array('octopus', 'octopuses'),
             array('pass', 'passes'),
+            array('passerby', 'passersby'),
             array('person', 'people'),
             array('plateau', 'plateaux'),
             array('potato', 'potatoes'),
@@ -119,6 +124,7 @@ class InflectorTest extends DoctrineTestCase
             array('son-in-law', 'sons-in-law'),
             array('species', 'species'),
             array('splash', 'splashes'),
+            array('spouse', 'spouses'),
             array('spy', 'spies'),
             array('stimulus', 'stimuli'),
             array('stitch', 'stitches'),
@@ -141,6 +147,12 @@ class InflectorTest extends DoctrineTestCase
             array('wharf', 'wharves'),
             array('wife', 'wives'),
             array('woman', 'women'),
+            array('clothes', 'clothes'),
+            array('pants', 'pants'),
+            array('police', 'police'),
+            array('scissors', 'scissors'),
+            array('trousers', 'trousers'),
+            array('dive', 'dives'),
         );
     }
 
@@ -150,11 +162,11 @@ class InflectorTest extends DoctrineTestCase
      * @dataProvider dataSampleWords
      * @return void
      */
-    public function testInflectingSingulars($singular, $plural) 
+    public function testInflectingSingulars($singular, $plural)
     {
         $this->assertEquals(
-            $singular, 
-            Inflector::singularize($plural), 
+            $singular,
+            Inflector::singularize($plural),
             "'$plural' should be singularized to '$singular'"
         );
     }
@@ -165,11 +177,11 @@ class InflectorTest extends DoctrineTestCase
      * @dataProvider dataSampleWords
      * @return void
      */
-    public function testInflectingPlurals($singular, $plural) 
+    public function testInflectingPlurals($singular, $plural)
     {
         $this->assertEquals(
-            $plural, 
-            Inflector::pluralize($singular), 
+            $plural,
+            Inflector::pluralize($singular),
             "'$singular' should be pluralized to '$plural'"
         );
     }
@@ -179,15 +191,15 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomPluralRule() 
+    public function testCustomPluralRule()
     {
         Inflector::reset();
         Inflector::rules('plural', array('/^(custom)$/i' => '\1izables'));
-        
+
         $this->assertEquals(Inflector::pluralize('custom'), 'customizables');
 
         Inflector::rules('plural', array('uninflected' => array('uninflectable')));
-        
+
         $this->assertEquals(Inflector::pluralize('uninflectable'), 'uninflectable');
 
         Inflector::rules('plural', array(
@@ -195,7 +207,7 @@ class InflectorTest extends DoctrineTestCase
             'uninflected' => array('noflect', 'abtuse'),
             'irregular' => array('amaze' => 'amazable', 'phone' => 'phonezes')
         ));
-        
+
         $this->assertEquals(Inflector::pluralize('noflect'), 'noflect');
         $this->assertEquals(Inflector::pluralize('abtuse'), 'abtuse');
         $this->assertEquals(Inflector::pluralize('alert'), 'alertables');
@@ -208,7 +220,7 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomSingularRule() 
+    public function testCustomSingularRule()
     {
         Inflector::reset();
         Inflector::rules('singular', array('/(eple)r$/i' => '\1', '/(jente)r$/i' => '\1'));
@@ -233,24 +245,24 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testRulesClearsCaches() 
+    public function testRulesClearsCaches()
     {
         Inflector::reset();
-        
+
         $this->assertEquals(Inflector::singularize('Bananas'), 'Banana');
         $this->assertEquals(Inflector::pluralize('Banana'), 'Bananas');
 
         Inflector::rules('singular', array(
             'rules' => array('/(.*)nas$/i' => '\1zzz')
         ));
-        
+
         $this->assertEquals('Banazzz', Inflector::singularize('Bananas'), 'Was inflected with old rules.');
 
         Inflector::rules('plural', array(
             'rules' => array('/(.*)na$/i' => '\1zzz'),
             'irregular' => array('corpus' => 'corpora')
         ));
-        
+
         $this->assertEquals(Inflector::pluralize('Banana'), 'Banazzz', 'Was inflected with old rules.');
         $this->assertEquals(Inflector::pluralize('corpus'), 'corpora', 'Was inflected with old irregular form.');
     }
@@ -260,10 +272,10 @@ class InflectorTest extends DoctrineTestCase
      *
      * @return void
      */
-    public function testCustomRuleWithReset() 
+    public function testCustomRuleWithReset()
     {
         Inflector::reset();
-        
+
         $uninflected = array('atlas', 'lapis', 'onibus', 'pires', 'virus', '.*x');
         $pluralIrregular = array('as' => 'ases');
 
@@ -304,6 +316,92 @@ class InflectorTest extends DoctrineTestCase
     public function testUcwordsWithCustomDelimeters()
     {
         $this->assertSame('Top-O-The-Morning To All_Of_You!', Inflector::ucwords( 'top-o-the-morning to all_of_you!', '-_ '));
+    }
+
+    /**
+     * @param $expected
+     * @param $word
+     *
+     * @dataProvider dataStringsTableize
+     * @return void
+     */
+    public function testTableize($expected, $word)
+    {
+        $this->assertSame($expected, Inflector::tableize($word));
+    }
+
+    /**
+     * Strings which are used for testTableize.
+     *
+     * @return array
+     */
+    public function dataStringsTableize()
+    {
+        // In the format array('expected', 'word')
+        return array(
+            array('', ''),
+            array('foo_bar', 'FooBar'),
+            array('f0o_bar', 'F0oBar'),
+        );
+    }
+
+    /**
+     * @param $expected
+     * @param $word
+     *
+     * @dataProvider dataStringsClassify
+     * @return void
+     */
+    public function testClassify($expected, $word)
+    {
+        $this->assertSame($expected, Inflector::classify($word));
+    }
+
+    /**
+     * Strings which are used for testClassify.
+     *
+     * @return array
+     */
+    public function dataStringsClassify()
+    {
+        // In the format array('expected', 'word')
+        return array(
+            array('', ''),
+            array('FooBar', 'foo_bar'),
+            array('FooBar', 'foo bar'),
+            array('F0oBar', 'f0o bar'),
+            array('F0oBar', 'f0o  bar'),
+            array('FooBar', 'foo_bar_'),
+        );
+    }
+
+    /**
+     * @param $expected
+     * @param $word
+     *
+     * @dataProvider dataStringsCamelize
+     * @return void
+     */
+    public function testCamelize($expected, $word)
+    {
+        $this->assertSame($expected, Inflector::camelize($word));
+    }
+
+    /**
+     * Strings which are used for testCamelize.
+     *
+     * @return array
+     */
+    public function dataStringsCamelize()
+    {
+        // In the format array('expected', 'word')
+        return array(
+            array('', ''),
+            array('fooBar', 'foo_bar'),
+            array('fooBar', 'foo bar'),
+            array('f0oBar', 'f0o bar'),
+            array('f0oBar', 'f0o  bar'),
+        );
     }
 }
 

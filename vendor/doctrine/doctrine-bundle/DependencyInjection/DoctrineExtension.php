@@ -21,8 +21,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
+use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 use Symfony\Component\Config\FileLocator;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\SymfonyBridgeAdapter;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader;
@@ -42,11 +45,6 @@ class DoctrineExtension extends AbstractDoctrineExtension
      * @var string
      */
     private $defaultConnection;
-
-    /**
-     * @var array
-     */
-    private $entityManagers;
 
     /**
      * @var SymfonyBridgeAdapter
@@ -125,6 +123,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
         $this->defaultConnection = $config['default_connection'];
 
         $container->setAlias('database_connection', sprintf('doctrine.dbal.%s_connection', $this->defaultConnection));
+        $container->getAlias('database_connection')->setPublic(true);
         $container->setAlias('doctrine.dbal.event_manager', new Alias(sprintf('doctrine.dbal.%s_connection.event_manager', $this->defaultConnection), false));
 
         $container->setParameter('doctrine.dbal.connection_factory.types', $config['types']);
@@ -137,16 +136,6 @@ class DoctrineExtension extends AbstractDoctrineExtension
 
         $container->setParameter('doctrine.connections', $connections);
         $container->setParameter('doctrine.default_connection', $this->defaultConnection);
-
-        $def = $container->getDefinition('doctrine.dbal.connection');
-        if (method_exists($def, 'setFactory')) {
-            // to be inlined in dbal.xml when dependency on Symfony DependencyInjection is bumped to 2.6
-            $def->setFactory(array(new Reference('doctrine.dbal.connection_factory'), 'createConnection'));
-        } else {
-            // to be removed when dependency on Symfony DependencyInjection is bumped to 2.6
-            $def->setFactoryService('doctrine.dbal.connection_factory');
-            $def->setFactoryMethod('createConnection');
-        }
 
         foreach ($config['connections'] as $name => $connection) {
             $this->loadDbalConnection($name, $connection, $container);
@@ -163,7 +152,9 @@ class DoctrineExtension extends AbstractDoctrineExtension
     protected function loadDbalConnection($name, array $connection, ContainerBuilder $container)
     {
         // configuration
-        $configuration = $container->setDefinition(sprintf('doctrine.dbal.%s_connection.configuration', $name), new DefinitionDecorator('doctrine.dbal.connection.configuration'));
+        $defitionClassname = $this->getDefinitionClassname();
+
+        $configuration = $container->setDefinition(sprintf('doctrine.dbal.%s_connection.configuration', $name), new $defitionClassname('doctrine.dbal.connection.configuration'));
         $logger = null;
         if ($connection['logging']) {
             $logger = new Reference('doctrine.dbal.logger');
@@ -171,12 +162,12 @@ class DoctrineExtension extends AbstractDoctrineExtension
         unset ($connection['logging']);
         if ($connection['profiling']) {
             $profilingLoggerId = 'doctrine.dbal.logger.profiling.'.$name;
-            $container->setDefinition($profilingLoggerId, new DefinitionDecorator('doctrine.dbal.logger.profiling'));
+            $container->setDefinition($profilingLoggerId, new $defitionClassname('doctrine.dbal.logger.profiling'));
             $profilingLogger = new Reference($profilingLoggerId);
             $container->getDefinition('data_collector.doctrine')->addMethodCall('addLogger', array($name, $profilingLogger));
 
             if (null !== $logger) {
-                $chainLogger = new DefinitionDecorator('doctrine.dbal.logger.chain');
+                $chainLogger = new $defitionClassname('doctrine.dbal.logger.chain');
                 $chainLogger->addMethodCall('addLogger', array($profilingLogger));
 
                 $loggerId = 'doctrine.dbal.logger.chain.'.$name;
@@ -205,30 +196,14 @@ class DoctrineExtension extends AbstractDoctrineExtension
         }
 
         // event manager
-        $container->setDefinition(sprintf('doctrine.dbal.%s_connection.event_manager', $name), new DefinitionDecorator('doctrine.dbal.connection.event_manager'));
+        $container->setDefinition(sprintf('doctrine.dbal.%s_connection.event_manager', $name), new $defitionClassname('doctrine.dbal.connection.event_manager'));
 
         // connection
-        // PDO ignores the charset property before 5.3.6 so the init listener has to be used instead.
-        if (isset($connection['charset']) && version_compare(PHP_VERSION, '5.3.6', '<')) {
-            if ((isset($connection['driver']) && stripos($connection['driver'], 'mysql') !== false) ||
-                 (isset($connection['driver_class']) && stripos($connection['driver_class'], 'mysql') !== false)) {
-                $mysqlSessionInit = new Definition('%doctrine.dbal.events.mysql_session_init.class%');
-                $mysqlSessionInit->setArguments(array($connection['charset']));
-                $mysqlSessionInit->setPublic(false);
-                $mysqlSessionInit->addTag('doctrine.event_subscriber', array('connection' => $name));
-
-                $container->setDefinition(
-                    sprintf('doctrine.dbal.%s_connection.events.mysqlsessioninit', $name),
-                    $mysqlSessionInit
-                );
-                unset($connection['charset']);
-            }
-        }
-
         $options = $this->getConnectionOptions($connection);
 
         $def = $container
-            ->setDefinition(sprintf('doctrine.dbal.%s_connection', $name), new DefinitionDecorator('doctrine.dbal.connection'))
+            ->setDefinition(sprintf('doctrine.dbal.%s_connection', $name), new $defitionClassname('doctrine.dbal.connection'))
+            ->setPublic(true)
             ->setArguments(array(
                 $options,
                 new Reference(sprintf('doctrine.dbal.%s_connection.configuration', $name)),
@@ -355,14 +330,18 @@ class DoctrineExtension extends AbstractDoctrineExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('orm.xml');
 
-        $this->entityManagers = array();
-        foreach (array_keys($config['entity_managers']) as $name) {
-            $this->entityManagers[$name] = sprintf('doctrine.orm.%s_entity_manager', $name);
+        if (class_exists(AbstractType::class) && method_exists(DoctrineType::class, 'reset')) {
+            $container->getDefinition('form.type.entity')->addTag('kernel.reset', array('method' => 'reset'));
         }
-        $container->setParameter('doctrine.entity_managers', $this->entityManagers);
+
+        $entityManagers = array();
+        foreach (array_keys($config['entity_managers']) as $name) {
+            $entityManagers[$name] = sprintf('doctrine.orm.%s_entity_manager', $name);
+        }
+        $container->setParameter('doctrine.entity_managers', $entityManagers);
 
         if (empty($config['default_entity_manager'])) {
-            $tmp = array_keys($this->entityManagers);
+            $tmp = array_keys($entityManagers);
             $config['default_entity_manager'] = reset($tmp);
         }
         $container->setParameter('doctrine.default_entity_manager', $config['default_entity_manager']);
@@ -373,27 +352,9 @@ class DoctrineExtension extends AbstractDoctrineExtension
         }
 
         $container->setAlias('doctrine.orm.entity_manager', sprintf('doctrine.orm.%s_entity_manager', $config['default_entity_manager']));
+        $container->getAlias('doctrine.orm.entity_manager')->setPublic(true);
 
-        // BC logic to handle DoctrineBridge < 2.6
-        if (!method_exists($this, 'fixManagersAutoMappings')) {
-            foreach ($config['entity_managers'] as $entityManager) {
-                if ($entityManager['auto_mapping'] && count($config['entity_managers']) > 1) {
-                    throw new \LogicException('You cannot enable "auto_mapping" when several entity managers are defined.');
-                }
-            }
-        } else {
-            $config['entity_managers'] = $this->fixManagersAutoMappings($config['entity_managers'], $container->getParameter('kernel.bundles'));
-        }
-
-        $def = $container->getDefinition('doctrine.orm.entity_manager.abstract');
-        if (method_exists($def, 'setFactory')) {
-            // to be inlined in dbal.xml when dependency on Symfony DependencyInjection is bumped to 2.6
-            $def->setFactory(array('%doctrine.orm.entity_manager.class%', 'create'));
-        } else {
-            // to be removed when dependency on Symfony DependencyInjection is bumped to 2.6
-            $def->setFactoryClass('%doctrine.orm.entity_manager.class%');
-            $def->setFactoryMethod('create');
-        }
+        $config['entity_managers'] = $this->fixManagersAutoMappings($config['entity_managers'], $container->getParameter('kernel.bundles'));
 
         $loadPropertyInfoExtractor = interface_exists('Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface')
             && class_exists('Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor');
@@ -433,7 +394,8 @@ class DoctrineExtension extends AbstractDoctrineExtension
      */
     protected function loadOrmEntityManager(array $entityManager, ContainerBuilder $container)
     {
-        $ormConfigDef = $container->setDefinition(sprintf('doctrine.orm.%s_configuration', $entityManager['name']), new DefinitionDecorator('doctrine.orm.configuration'));
+        $definitionClassname = $this->getDefinitionClassname();
+        $ormConfigDef = $container->setDefinition(sprintf('doctrine.orm.%s_configuration', $entityManager['name']), new $definitionClassname('doctrine.orm.configuration'));
 
         $this->loadOrmEntityManagerMappingInformation($entityManager, $ormConfigDef, $container);
         $this->loadOrmCacheDrivers($entityManager, $container);
@@ -523,7 +485,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
 
         $managerConfiguratorName = sprintf('doctrine.orm.%s_manager_configurator', $entityManager['name']);
         $container
-            ->setDefinition($managerConfiguratorName, new DefinitionDecorator('doctrine.orm.manager_configurator.abstract'))
+            ->setDefinition($managerConfiguratorName, new $definitionClassname('doctrine.orm.manager_configurator.abstract'))
             ->replaceArgument(0, $enabledFilters)
             ->replaceArgument(1, $filtersParameters)
         ;
@@ -533,7 +495,8 @@ class DoctrineExtension extends AbstractDoctrineExtension
         }
 
         $container
-            ->setDefinition(sprintf('doctrine.orm.%s_entity_manager', $entityManager['name']), new DefinitionDecorator('doctrine.orm.entity_manager.abstract'))
+            ->setDefinition(sprintf('doctrine.orm.%s_entity_manager', $entityManager['name']), new $definitionClassname('doctrine.orm.entity_manager.abstract'))
+            ->setPublic(true)
             ->setArguments(array(
                 new Reference(sprintf('doctrine.dbal.%s_connection', $entityManager['connection'])),
                 new Reference(sprintf('doctrine.orm.%s_configuration', $entityManager['name'])),
@@ -849,5 +812,13 @@ class DoctrineExtension extends AbstractDoctrineExtension
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
         return new Configuration($container->getParameter('kernel.debug'));
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefinitionClassname()
+    {
+        return class_exists(ChildDefinition::class) ? ChildDefinition::class : DefinitionDecorator::class;
     }
 }
