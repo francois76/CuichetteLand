@@ -12,11 +12,21 @@ class homePageController extends Controller
    public function indexAction()
     {
 		$em = $this->getDoctrine()->getManager();
-		$imageRepository = $em->getRepository('CuichetteLandwebsiteBundle:Images');
-		$image = $imageRepository->find("1");
-		$adresse = $image -> getNomImage();
+		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
+		$ids = array();
+		foreach($categories as $categorie)
+		{
+			array_push($ids, $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getthreeproducts($categorie));
+		}
+		$names = array();
+		foreach($ids as $idcategories)
+		{
+			array_push($names, array($em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[0]["id"]),$em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[1]["id"]),$em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[2]["id"])));
+		}
         return $this->render('CuichetteLandwebsiteBundle:Default:index.html.twig', array(
-  'adresse' => $adresse
+		'names' => $names
 ));
     }
+	
+	
 }

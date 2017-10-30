@@ -10,4 +10,11 @@ namespace CuichetteLand\websiteBundle\Repository;
  */
 class ImagesRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getmainpicture($id)
+	{
+		$query = $this -> _em -> createQuery('SELECT i.nomImage FROM CuichetteLandwebsiteBundle:Images i WHERE i.idProduit = :idProduit AND i.imagePrincipale = :main');
+		$query->setParameter('idProduit', $id);
+		$query->setParameter('main', "1");
+		return $query->getResult();
+	}
 }

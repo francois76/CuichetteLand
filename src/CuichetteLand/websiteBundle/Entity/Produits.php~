@@ -3,6 +3,7 @@
 namespace CuichetteLand\websiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Produits
@@ -100,4 +101,36 @@ class Produits
     {
         return $this->prix;
     }
+
+    /**
+     * Set categorie
+     *
+     * @param string $categorie
+     *
+     * @return Produits
+     */
+    public function setCategorie($categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * Get categorie
+     *
+     * @return string
+     */
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
+	
+	public function getAllCategories()
+	{
+		$query = $this->_em->createQuery('SELECT a FROM Produits categorie');
+		$results = $query->getResult();
+
+  return $results;
+	}
 }
