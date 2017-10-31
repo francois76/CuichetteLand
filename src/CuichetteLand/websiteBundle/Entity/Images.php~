@@ -100,28 +100,4 @@ class Images
     {
         return $this->nomImage;
     }
-
-    /**
-     * Set imagePrincipale
-     *
-     * @param boolean $imagePrincipale
-     *
-     * @return Images
-     */
-    public function setImagePrincipale($imagePrincipale)
-    {
-        $this->imagePrincipale = $imagePrincipale;
-
-        return $this;
-    }
-
-    /**
-     * Get imagePrincipale
-     *
-     * @return boolean
-     */
-    public function getImagePrincipale()
-    {
-        return $this->imagePrincipale;
-    }
 }

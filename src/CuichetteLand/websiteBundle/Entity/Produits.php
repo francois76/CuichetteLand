@@ -124,4 +124,6 @@ class Produits
     {
         return $this->categorie;
     }
+	
+	
 }
