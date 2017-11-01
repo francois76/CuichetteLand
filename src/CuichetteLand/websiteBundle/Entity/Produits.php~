@@ -3,7 +3,6 @@
 namespace CuichetteLand\websiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Produits
@@ -42,6 +41,14 @@ class Produits
      * @ORM\Column(name="Categorie", type="string", length=255)
      */
 	private $categorie;
+	
+	/**
+     * @var int
+     *
+     * @ORM\Column(name="quantite", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+	private $quantite;
 
 
     /**
@@ -126,11 +133,5 @@ class Produits
         return $this->categorie;
     }
 	
-	public function getAllCategories()
-	{
-		$query = $this->_em->createQuery('SELECT a FROM Produits categorie');
-		$results = $query->getResult();
-
-  return $results;
-	}
+	
 }
