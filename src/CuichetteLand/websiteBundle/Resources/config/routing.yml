@@ -1,3 +1,7 @@
 cuichette_landwebsite_homepage:
     path:     /
     defaults: { _controller: CuichetteLandwebsiteBundle:homePage:index }
+
+cuichettefom:
+    path:     /form
+    defaults: { _controller: CuichetteLandwebsiteBundle:User:form }
