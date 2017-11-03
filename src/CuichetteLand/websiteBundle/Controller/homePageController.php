@@ -24,7 +24,7 @@ class homePageController extends Controller
 			array_push($names, array($em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[0]["id"]),$em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[1]["id"]),$em->getRepository('CuichetteLandwebsiteBundle:Images')->getmainpicture($idcategories[2]["id"])));
 		}
         return $this->render('CuichetteLandwebsiteBundle:Default:index.html.twig', array(
-		'names' => $names
+		'names' => $names, 'categories' => $categories
 ));
     }
 	

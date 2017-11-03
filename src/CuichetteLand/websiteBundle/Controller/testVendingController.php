@@ -34,11 +34,11 @@ class testVendingController extends Controller
 			if ($form->isValid()) {
 				$Achats -> setUtilisateur( $user -> getID());
 				$Achats -> setValide ("0");
+				$Achats -> setIdarticle($produit -> getId());
 				$em->persist($Achats);
-				$user -> setAccount($user -> getAccount()-(($Achats -> getQuantite())*($produit -> getPrix())));
-				$produit -> setQuantite($produit -> getQuantite() - $Achats -> getQuantite());
 				$em->flush();
 				$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+				return $this->redirectToRoute('cuichette_landwebsite_homepage');
 	  }
 	}
         return $this->render('CuichetteLandwebsiteBundle:Default:testVending.html.twig', array(

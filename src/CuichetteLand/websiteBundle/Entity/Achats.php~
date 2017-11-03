@@ -131,28 +131,5 @@ class Achats
     {
         return $this->valide;
     }
-
-    /**
-     * Set idarticle
-     *
-     * @param integer $idarticle
-     *
-     * @return Achats
-     */
-    public function setIdarticle($idarticle)
-    {
-        $this->idarticle = $idarticle;
-
-        return $this;
-    }
-
-    /**
-     * Get idarticle
-     *
-     * @return integer
-     */
-    public function getIdarticle()
-    {
-        return $this->idarticle;
-    }
 }
+

@@ -5,3 +5,7 @@ cuichette_landwebsite_homepage:
 cuichette_landwebsite_testvending:
     path:     /test
     defaults: { _controller: CuichetteLandwebsiteBundle:testVending:testVending }
+    
+cuichette_landwebsite_panier:
+    path:     /panier
+    defaults: { _controller: CuichetteLandwebsiteBundle:panier:panier }
