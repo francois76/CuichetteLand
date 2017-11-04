@@ -20,3 +20,8 @@ login_check:
 
 logout:
     path: /logout
+
+cuichetteform:
+    path:     /register
+    defaults: { _controller: CuichetteLandwebsiteBundle:User:form }
+

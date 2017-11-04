@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+
+<!--
+
+	Landed by HTML5 UP
+
+	html5up.net | @ajlkn
+
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+
+-->
+
+<html>
+
+	<head>
+
+		<title>Cuichette Land</title>
+
+		<meta charset="utf-8" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+
+		<link rel="stylesheet" href="assets/css/main.css" />
+
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+	</head>
+
+	<body class="landing">
+
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="/"><img src="images/logo.png" alt="" /></a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li>
+								<a href="">Accéder au magasin</a>
+								<ul>
+								{% for categorie in categories %}
+									<li><a href="">{{categorie["categorie"]}}</a></li>
+								{% endfor %}
+								</ul>
+							</li>
+							<li><a href="elements.html.twig">Messagerie</a></li>
+							{% if user == "anon." %}
+							<li><a href="/login" class="button special">Login</a></li>
+							<li><a href="/register" class="button special">Register</a></li>
+							{% else %}
+							<li><a class="button">{{user.account}}€</a></li>
+							<li><a href="/panier">Panier</a></li>
+							<li><a href="/logout" class="button special">{{user.prenom}} - Se deconnecter</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				</header>
+
+
+
+			<!-- Banner -->
+
+				<section id="banner">
+
+					<div class="content">
+
+						<div class="table-wrapper">
+							<form class="form-signin" action="/register" method="post">
+      <h2 class="form-signin-heading">Inscription</h2>
+      <label for="lastname" class="sr-only">Nom</label>
+      <input type="text" name="lastname" class="form-control form1" placeholder="Nom" required autofocus>
+	  <br/>
+      <label for="firstname" class="sr-only">Prénom</label>
+      <input type="text" name="firstname" class="form-control form2" placeholder="Prénom" required autofocus>
+	  <br/>
+      <label for="email" class="sr-only">Adresse Email</label>
+      <input type="email" name="email" class="form-control form2" placeholder="Adresse Email" required autofocus>
+	  <br/>
+      <label for="password" class="sr-only">Mot de passe</label>
+      <input type="password" name="password" class="form-control form2" placeholder="Mot de passe" required>
+	  <br/>
+      <label for="passwordverif" class="sr-only">Confirmer le mot de passe</label>
+      <input type="password" name="passwordverif" class="form-control form3" placeholder="Confirmer le mot de passe" required>
+	  <br/>
+      {% if email is defined %}
+      <div class="alert alert-danger">Cette adresse email est déjà associée à un compte</div>
+      {% endif %}
+      <button id="btnIscription" class="button special" type="submit">S'inscrire</button>
+      <div id="test" hidden>
+        * Validation du mot de passe incorrecte
+      </div>
+</form>
+							
+
+						</div>
+
+					</div>
+
+					<a href="#one" class="goto-next scrolly">Next</a>
+
+				</section>
+
+
+
+
+
+
+
+			<!-- Footer -->
+
+				<footer id="footer">
+
+					<ul class="copyright">
+
+						<li>&copy; LaTeam coorp All rights reserved.</li>
+
+					</ul>
+
+				</footer>
+
+
+
+		</div>
+
+
+
+		<!-- Scripts -->
+
+			<script src="assets/js/jquery.min.js"></script>
+
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+
+			<script src="assets/js/skel.min.js"></script>
+
+			<script src="assets/js/util.js"></script>
+
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+
+			<script src="assets/js/main.js"></script>
+
+
+
+	</body>
+
+</html>
+
+<script type="text/javascript">
+document.getElementByName('passwordverif').onchange = function() {
+
+  password = document.getElementByName('password').value;
+  passwordverif = document.getElementByName('passwordverif').value;
+
+  if (password.localeCompare(passwordverif) == 0) {
+    document.getElementByName('btnIscription').disabled = false;
+    document.getElementByName('test').hidden = true;
+  }
+  else {
+    document.getElementByName('btnIscription').disabled = true;
+    document.getElementByName('test').hidden = false;
+  }
+}
+</script>
+
+

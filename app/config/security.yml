@@ -6,7 +6,7 @@ security:
         ROLE_ADMIN:       ROLE_USER
         
     encoders:
-        CuichetteLand\websiteBundle\Entity\User: plaintext
+        CuichetteLand\websiteBundle\Entity\User: bcrypt
     providers:
         main:
           entity:

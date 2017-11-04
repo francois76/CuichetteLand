@@ -11,6 +11,7 @@ class SecurityController extends Controller
   {
 	$em = $this->getDoctrine()->getManager();
 	$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
+	$user= $this->get('security.token_storage')->getToken()->getUser();
     // Si le visiteur est déjà identifié, on le redirige vers l'accueil
     if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
       return $this->redirectToRoute('cuichette_landwebsite_homepage');
@@ -24,7 +25,8 @@ class SecurityController extends Controller
     return $this->render('CuichetteLandwebsiteBundle:Security:login.html.twig', array(
       'last_username' => $authenticationUtils->getLastUsername(),
       'error'         => $authenticationUtils->getLastAuthenticationError(),
-	  'categories'    => $categories
+	  'categories'    => $categories,
+	  'user'          => $user
     ));
   }
 }

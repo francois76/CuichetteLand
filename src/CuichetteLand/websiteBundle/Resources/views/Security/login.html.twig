@@ -18,7 +18,7 @@
 		<div id="page-wrapper">
 			<!-- Header -->
 				<header id="header">
-					<h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="" /></a></h1>
+					<h1 id="logo"><a href="/"><img src="images/logo.png" alt="" /></a></h1>
 					<nav id="nav">
 						<ul>
 							<li><a href="/">Accueil</a></li>
@@ -31,8 +31,14 @@
 								</ul>
 							</li>
 							<li><a href="elements.html.twig">Messagerie</a></li>
+							{% if user == "anon." %}
+							<li><a href="/login" class="button special">Login</a></li>
+							<li><a href="/register" class="button special">Register</a></li>
+							{% else %}
+							<li><a class="button">{{user.account}}€</a></li>
 							<li><a href="/panier">Panier</a></li>
-							<li><a href="#" class="button special">Se connecter</a></li>
+							<li><a href="/logout" class="button special">{{user.prenom}} - Se deconnecter</a></li>
+							{% endif %}
 						</ul>
 					</nav>
 				</header>
@@ -41,18 +47,19 @@
 				<section id="banner">
 					<div class="content">
 						<div class="table-wrapper">
-							{% if error %}
-							<div class="button special fit">{{ error.message }}</div>
-							{% endif %}
-
+							<h2 class="form-signin-heading">Login</h2>
 							<form action="{{ path('login_check') }}" method="post">
-								<label for="username">Login :</label>
-								<input type="text" id="username" name="_username" value="{{ last_username }}" />
-								<label for="password">Mot de passe :</label>
-								<input type="password" id="password" name="_password" />
+								<label for="username" class="sr-only">Login :</label>
+								<input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Adresse email" required autofocus/>
+								<br/>
+								<label for="password" class="sr-only">Mot de passe :</label>
+								<input type="password" id="password" name="_password" placeholder="mot de passe" required autofocus />
 								<br />
 								<input type="submit" value="Connexion" />
 							</form>
+							{% if error %}
+							<div class="button special fit">Identifiants incorrects</div>
+							{% endif %}
 						</div>
 					</div>
 					<a href="#one" class="goto-next scrolly">Next</a>

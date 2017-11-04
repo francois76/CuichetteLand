@@ -44,12 +44,18 @@ class User implements UserInterface
     private $mail;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="numtel", type="integer")
+     * @ORM\Column(name="password", type="string", length=255)
      */
-    private $numtel;
+    private $password;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255)
+     */
+    private $salt;
 	
 	/**
      * @var float
@@ -57,25 +63,6 @@ class User implements UserInterface
      * @ORM\Column(name="account", type="float")
      */
 	private $account;
-	
-	/**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-	
-	/**
-
-     * @var string
-
-     *
-
-     * @ORM\Column(name="salt", type="string", length=255)
-
-     */
-
-    private $salt;
 	
 	/**
 	* @ORM\Column(name="roles", type="array")
@@ -165,61 +152,11 @@ class User implements UserInterface
     }
 
     /**
-     * Set numtel
-     *
-     * @param integer $numtel
-     *
-     * @return user
-     */
-    public function setNumtel($numtel)
-    {
-        $this->numtel = $numtel;
-
-        return $this;
-    }
-
-    /**
-     * Get numtel
-     *
-     * @return int
-     */
-    public function getNumtel()
-    {
-        return $this->numtel;
-    }
-
-
-
-    /**
-     * Set account
-     *
-     * @param float $account
-     *
-     * @return User
-     */
-    public function setAccount($account)
-    {
-        $this->account = $account;
-
-        return $this;
-    }
-
-    /**
-     * Get account
-     *
-     * @return float
-     */
-    public function getAccount()
-    {
-        return $this->account;
-    }
-	
-	/**
      * Set password
      *
      * @param string $password
      *
-     * @return User
+     * @return user
      */
     public function setPassword($password)
     {
@@ -237,7 +174,7 @@ class User implements UserInterface
     {
         return $this->password;
     }
-
+    
     /**
      * Set salt
      *
@@ -263,6 +200,30 @@ class User implements UserInterface
     }
 
     /**
+     * Set account
+     *
+     * @param float $account
+     *
+     * @return User
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return float
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+
+    /**
      * Set roles
      *
      * @param array $roles
@@ -285,13 +246,13 @@ class User implements UserInterface
     {
         return $this->roles;
     }
-	
 	public function getUsername()
 	{
 		return $this -> getMail();
 	}
-	
+
 	public function eraseCredentials()
-  {
-  }
+	{
+		
+	}
 }
