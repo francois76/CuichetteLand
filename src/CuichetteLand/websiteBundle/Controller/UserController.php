@@ -18,23 +18,29 @@ class UserController extends homePageController
                 array('mail' => $request->get('mail'))
             );
 
-        if ($request->isMethod('POST')) { 
+        if ($request->isMethod('POST')) {
 
           // Init
           $em = $this->getDoctrine()->getManager();
           $user = new user();
 
+          // Password encryption
+          $factory = $this->get('security.encoder_factory');
+          $encoder = $factory->getEncoder($user);
+          $salt = uniqid(mt_rand(), true);
+          $password = $encoder->encodePassword($request->get('password'), $salt);
 
           // Creating the user
-          $user->setPassword($request->get('password'));
+          $user->setPassword($password);
           $user->setNom($request->get('lastname'));
           $user->setPrenom($request->get('firstname'));
           $user->setMail($request->get('email'));
+          $user->setSalt($salt);
 
           // Executing the query on database
           $em->persist($user);
           $em->flush();
-		  
+
 
           return $this->redirectToRoute('cuichette_landwebsite_homepage');
         }
