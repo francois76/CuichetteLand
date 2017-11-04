@@ -17,7 +17,7 @@ class panierController extends Controller
    public function panierAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager(); 
-		$user = $em->getRepository('CuichetteLandwebsiteBundle:User')->find(1); //a remplacer par l'utilisateur courant
+		$user= $this->get('security.token_storage')->getToken()->getUser();
 		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
 		$achatsId = $em->getRepository('CuichetteLandwebsiteBundle:Achats')-> getAllProductChosen($user);
 		$achats = array();

@@ -13,12 +13,7 @@ class homePageController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
-		$user = $em->getRepository('CuichetteLandwebsiteBundle:User')->find(1); //a remplacer par l'utilisateur courant
-		$user->setSalt('');
-      // On définit uniquement le role ROLE_USER qui est le role de base
-		$user->setRoles(array('ROLE_USER'));
-		$em->persist($user);
-		$em->flush();
+		$user= $this->get('security.token_storage')->getToken()->getUser();
 		$ids = array();
 		foreach($categories as $categorie)
 		{

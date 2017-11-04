@@ -32,9 +32,14 @@
 								</ul>
 							</li>
 							<li><a href="elements.html.twig">Messagerie</a></li>
+							{% if user == "anon." %}
+							<li><a href="/login" class="button special">Login</a></li>
+							<li><a href="/register" class="button special">Register</a></li>
+							{% else %}
 							<li><a class="button">{{user.account}}€</a></li>
 							<li><a href="/panier">Panier</a></li>
-							<li><a href="#" class="button special">Se connecter</a></li>
+							<li><a href="/logout" class="button special">{{user.prenom}} - Se deconnecter</a></li>
+							{% endif %}
 						</ul>
 					</nav>
 				</header>

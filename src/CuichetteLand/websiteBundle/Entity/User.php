@@ -3,6 +3,7 @@
 namespace CuichetteLand\websiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * user
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="CuichetteLand\websiteBundle\Repository\userRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -49,12 +50,6 @@ class User
      */
     private $numtel;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="birthdate", type="datetime")
-     */
-    private $birthdate;
 	
 	/**
      * @var float
@@ -193,29 +188,7 @@ class User
         return $this->numtel;
     }
 
-    /**
-     * Set birthdate
-     *
-     * @param \DateTime $birthdate
-     *
-     * @return user
-     */
-    public function setBirthdate($birthdate)
-    {
-        $this->birthdate = $birthdate;
 
-        return $this;
-    }
-
-    /**
-     * Get birthdate
-     *
-     * @return \DateTime
-     */
-    public function getBirthdate()
-    {
-        return $this->birthdate;
-    }
 
     /**
      * Set account
@@ -312,4 +285,13 @@ class User
     {
         return $this->roles;
     }
+	
+	public function getUsername()
+	{
+		return $this -> getMail();
+	}
+	
+	public function eraseCredentials()
+  {
+  }
 }

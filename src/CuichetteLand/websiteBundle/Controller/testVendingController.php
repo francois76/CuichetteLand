@@ -20,7 +20,7 @@ class testVendingController extends Controller
    public function testVendingAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager(); //deja présent sur la page normalement XD
-		$user = $em->getRepository('CuichetteLandwebsiteBundle:User')->find(1); //a remplacer par l'utilisateur courant
+		$user= $this->get('security.token_storage')->getToken()->getUser();
 		$produit = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->find(1); // a remplacer par le produit courant
 		
 		$Achats = new Achats();
