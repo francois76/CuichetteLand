@@ -62,7 +62,30 @@ class User
      * @ORM\Column(name="account", type="float")
      */
 	private $account;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+	
+	/**
 
+     * @var string
+
+     *
+
+     * @ORM\Column(name="salt", type="string", length=255)
+
+     */
+
+    private $salt;
+	
+	/**
+	* @ORM\Column(name="roles", type="array")
+	*/
+	private $roles = array();
 
     /**
      * Get id
@@ -192,5 +215,53 @@ class User
     public function getBirthdate()
     {
         return $this->birthdate;
+    }
+
+    /**
+     * Set account
+     *
+     * @param float $account
+     *
+     * @return User
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return float
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+	
+	/**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 }

@@ -16,7 +16,6 @@
 	</head>
 	<body class="landing">
 		<div id="page-wrapper">
-
 			<!-- Header -->
 				<header id="header">
 					<h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="" /></a></h1>
@@ -24,23 +23,16 @@
 						<ul>
 							<li><a href="/">Accueil</a></li>
 							<li>
-								<a href="#">Accéder au magasin</a>
+								<a href="">Accéder au magasin</a>
 								<ul>
-									<li><a href="">Catégorie 1</a></li>
-									<li><a href="">Catégorie 2</a></li>
-									<li><a href="">Catégorie 3</a></li>
-									<li>
-										<a href="#">Submenu</a>
-										<ul>
-											<li><a href="#">Option 1</a></li>
-											<li><a href="#">Option 2</a></li>
-											<li><a href="#">Option 3</a></li>
-											<li><a href="#">Option 4</a></li>
-										</ul>
-									</li>
+								{% for categorie in categories %}
+									<li><a href="">{{categorie["categorie"]}}</a></li>
+								{% endfor %}
 								</ul>
 							</li>
 							<li><a href="elements.html.twig">Messagerie</a></li>
+							<li><a class="button">{{user.account}}€</a></li>
+							<li><a href="/panier">Panier</a></li>
 							<li><a href="#" class="button special">{{user.prenom}} - Se deconnecter</a></li>
 						</ul>
 					</nav>

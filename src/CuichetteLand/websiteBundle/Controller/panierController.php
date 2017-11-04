@@ -18,6 +18,7 @@ class panierController extends Controller
     {
 		$em = $this->getDoctrine()->getManager(); 
 		$user = $em->getRepository('CuichetteLandwebsiteBundle:User')->find(1); //a remplacer par l'utilisateur courant
+		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
 		$achatsId = $em->getRepository('CuichetteLandwebsiteBundle:Achats')-> getAllProductChosen($user);
 		$achats = array();
 		$sum = 0;
@@ -54,7 +55,7 @@ class panierController extends Controller
 	  }
 	}
         return $this->render('CuichetteLandwebsiteBundle:Default:panier.html.twig', array(
-		'user' => $user, 'achats' => $achats, 'somme' => $sum, 'form' => $form->createView()
+		'user' => $user, 'achats' => $achats, 'somme' => $sum, 'form' => $form->createView(), 'categories' => $categories
 ));
     }
 	
