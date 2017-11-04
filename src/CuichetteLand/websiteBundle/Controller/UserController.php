@@ -9,10 +9,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends homePageController
 {
-    public function indexAction()
-    {
-        return $this->render('CuichetteLand:websiteBundle:Default:form.html.twig');
-    }
 
     public function formAction(Request $request)
     {
@@ -22,7 +18,7 @@ class UserController extends homePageController
                 array('mail' => $request->get('mail'))
             );
 
-        if (!$user) { // Si le mail n'est pas déja utilisé
+        if ($request->isMethod('POST')) { 
 
           // Init
           $em = $this->getDoctrine()->getManager();
@@ -31,18 +27,19 @@ class UserController extends homePageController
 
           // Creating the user
           $user->setPassword($request->get('password'));
-          $user->setNom($request->get('nom'));
-          $user->setPrenom($request->get('prenom'));
-          $user->setMail($request->get('mail'));
+          $user->setNom($request->get('lastname'));
+          $user->setPrenom($request->get('firstname'));
+          $user->setMail($request->get('email'));
 
           // Executing the query on database
           $em->persist($user);
           $em->flush();
+		  
 
           return $this->redirectToRoute('cuichette_landwebsite_homepage');
         }
         else {
-          return $this->render('CuichetteLand:websiteBundle:Default:form.html.twig', array(
+          return $this->render('CuichetteLandwebsiteBundle:Default:form.html.twig', array(
             'mail' => 1,
           ));
         }
