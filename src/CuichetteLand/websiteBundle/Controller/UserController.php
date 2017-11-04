@@ -7,19 +7,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class RegistrationController extends homePageController
+class UserController extends homePageController
 {
     public function indexAction()
     {
         return $this->render('CuichetteLand:websiteBundle:Default:form.html.twig');
     }
 
-    public function inscriptionAction(Request $request)
+    public function formAction(Request $request)
     {
         $user = $this->getDoctrine()
             ->getRepository(user::class)
             ->findOneBy(
-                array('email' => $request->get('email'))
+                array('mail' => $request->get('mail'))
             );
 
         if (!$user) { // Si le mail n'est pas déja utilisé
@@ -28,19 +28,12 @@ class RegistrationController extends homePageController
           $em = $this->getDoctrine()->getManager();
           $user = new user();
 
-          // Password encryption
-          $factory = $this->get('security.encoder_factory');
-          $encoder = $factory->getEncoder($user);
-          $salt = uniqid(mt_rand(), true);
-          $password = $encoder->encodePassword($request->get('password'), $salt);
 
           // Creating the user
-          $user->setPassword($password);
+          $user->setPassword($request->get('password'));
           $user->setNom($request->get('nom'));
           $user->setPrenom($request->get('prenom'));
           $user->setMail($request->get('mail'));
-            $user->setSalt($salt);
-
 
           // Executing the query on database
           $em->persist($user);
