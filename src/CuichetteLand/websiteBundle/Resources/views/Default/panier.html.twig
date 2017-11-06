@@ -55,6 +55,7 @@
 												<th>Nom</th>
 												<th>Quantité</th>
 												<th>Prix total</th>
+												<th>Annuler</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -63,6 +64,7 @@
 												<td>{{achat[0]}}</td>
 												<td>{{achat[1]}}</td>
 												<td>{{achat[2]}}€</td>
+												<td><a href="/delete/{{achat[3]}}" class="button special small">X</a></td>
 											</tr>
 											{% endfor %}
 										</tbody>
@@ -74,6 +76,9 @@
 										</tfoot>
 									</table>
 									{{ form(form) }}
+							{% if error %}
+							<div class="button special fit">Solde insuffisant</div>
+							{% endif %}
 								</div>
 					</div>
 					<a href="#one" class="goto-next scrolly">Next</a>

@@ -20,6 +20,7 @@ class panierController extends Controller
 		$user= $this->get('security.token_storage')->getToken()->getUser();
 		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
 		$achatsId = $em->getRepository('CuichetteLandwebsiteBundle:Achats')-> getAllProductChosen($user);
+		$error = 0;
 		$achats = array();
 		$sum = 0;
 		foreach($achatsId as $achatId)
@@ -29,6 +30,7 @@ class panierController extends Controller
 			array_push($achat, $produit -> getNom());
 			array_push($achat, $achatId -> getQuantite());
 			array_push($achat, ($produit -> getPrix()* $achatId -> getQuantite()));
+			array_push($achat, ($achatId -> getId()));
 			$sum = $sum + ($produit -> getPrix()*$achatId -> getQuantite()) ;
 			array_push($achats, $achat);
 		}
@@ -42,6 +44,13 @@ class panierController extends Controller
 			$form->handleRequest($request);
 
 			if ($form->isValid()) {
+				if($sum > $user -> getAccount() )
+				{
+					$error = 1;
+					return $this->render('CuichetteLandwebsiteBundle:Default:panier.html.twig', array(
+					'user' => $user, 'achats' => $achats, 'somme' => $sum, 'form' => $form->createView(), 'categories' => $categories, 'error' => $error
+					));
+				}
 				$em->getRepository('CuichetteLandwebsiteBundle:Achats') -> setChosenProductsAsValidate($user);
 				foreach($achatsId as $achatId)
 				{
@@ -55,7 +64,7 @@ class panierController extends Controller
 	  }
 	}
         return $this->render('CuichetteLandwebsiteBundle:Default:panier.html.twig', array(
-		'user' => $user, 'achats' => $achats, 'somme' => $sum, 'form' => $form->createView(), 'categories' => $categories
+		'user' => $user, 'achats' => $achats, 'somme' => $sum, 'form' => $form->createView(), 'categories' => $categories, 'error' => $error
 ));
     }
 	

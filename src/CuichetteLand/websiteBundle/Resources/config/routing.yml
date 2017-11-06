@@ -25,3 +25,8 @@ cuichetteform:
     path:     /register
     defaults: { _controller: CuichetteLandwebsiteBundle:User:form }
 
+cuichette_landwebsite_deleteitem:
+    path:     /delete/{id}
+    defaults: { _controller: CuichetteLandwebsiteBundle:delete:delete }
+
+

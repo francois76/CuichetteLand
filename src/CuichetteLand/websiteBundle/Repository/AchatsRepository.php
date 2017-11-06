@@ -27,4 +27,18 @@ class AchatsRepository extends \Doctrine\ORM\EntityRepository
 		$query->setParameter('invalide', "0");
 		return $query->getResult();
 	}
+	
+	public function deleteAchat($id)
+	{
+		$query = $this -> _em -> createQuery('DELETE FROM CuichetteLandwebsiteBundle:Achats a WHERE a.id = :id ');
+		$query->setParameter('id', $id);
+		return $query->getResult();
+	}
+	
+	public function getAchatFromId($id)
+	{
+		$query = $this -> _em -> createQuery('SELECT a FROM CuichetteLandwebsiteBundle:Achats a WHERE a.id = :id ');
+		$query->setParameter('id', $id);
+		return $query->getResult();
+	}
 }
