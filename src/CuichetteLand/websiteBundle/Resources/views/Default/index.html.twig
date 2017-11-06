@@ -80,7 +80,7 @@
 					</div>
 					<a href="#two" class="goto-next scrolly">Next</a>
 				</section>
-
+				{% if names%}
 			<!-- Two -->
 				<section id="two" >
 												
@@ -94,6 +94,7 @@
 							<li><a href="#" class="button">Accéder à la section</a></li>
 						</ul>
 									<div>
+									{% if names[0]%}
 										{% if names[0][0]%}
 										<div class="2u  3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="images/cuichettes/{{names[0][0][0]["nomImage"]}}" alt="images/pic04.jpg" /></span></div>
 										{% else %}
@@ -109,6 +110,7 @@
 										{% else %}
 										<div class="2u$ 3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="images/pic04.jpg" alt="images/pic04.jpg" /></span></div>
 										{% endif %}
+									{% endif %}
 									</div>
 					</div>
 									<br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -121,6 +123,7 @@
 						
 						
 									<div>
+									{% if names[1]%}
 										{% if names[1][0]%}
 										<div class="2u  3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="images/cuichettes/{{names[1][0][0]["nomImage"]}}" alt="images/pic04.jpg" /></span></div>
 										{% else %}
@@ -136,6 +139,7 @@
 										{% else %}
 										<div class="2u$ 3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="images/pic04.jpg" alt="images/pic04.jpg" /></span></div>
 										{% endif %}
+									{% endif %}
 									</div>
 									<ul class="actions" style="float: left">
 						<header>
@@ -148,7 +152,7 @@
 					<a href="#four" class="goto-next scrolly">Next</a>
 					<br/><br/><br/><br/><br/><br/><br/><br/>
 				</section>
-
+				{% endif %}
 			<!-- Footer -->
 				<footer id="footer">
 					<ul class="copyright">
