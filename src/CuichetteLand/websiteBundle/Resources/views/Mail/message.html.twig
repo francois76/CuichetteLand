@@ -10,7 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
@@ -20,7 +20,7 @@
 		
 			<!-- Header -->
 				<header id="header">
-					<h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="" /></a></h1>
+					<h1 id="logo"><a href="index.html"><img src="/images/logo.png" alt="" /></a></h1>
 					<nav id="nav">
 						<ul>
 							<li><a href="/">Accueil</a></li>
@@ -48,32 +48,11 @@
 			<!-- Banner -->
 				<section id="banner">
 					<div class="content">
-						<div class="table-wrapper">
-						<a href="/message/new" class="button special small">Nouveau message</a>
-						<br/><br/><br/><br/>
-									<table>
-										<thead>
-											<tr>
-												<th>Expediteur</th>
-												<th>Date</th>
-												<th>Objet</th>
-												<th>Supprimer</th>
-											</tr>
-										</thead>
-										<tbody>
-
-											<tr>
-												<td>fgognet@gmail.com</td>
-												<td>7/11/2017</td>
-												<td>Ceci est un objet</td>
-												<td><a href="/deletemessage" class="button special small">X</a></td>
-											</tr>
-
-										</tbody>
-
-									</table>
-
-								</div>
+						<ul class="alt">
+						<li><h2>{{email[0]['mail']}}</h2></li>
+						<li><h3>{{email[1]}}</h3></li>
+						<li><pre>{{email[2]}}</pre></li>
+						</ul>
 					</div>
 					<a href="#one" class="goto-next scrolly">Next</a>
 				</section>

@@ -38,5 +38,10 @@ cuichette_landwebsite_newmessage:
     defaults: { _controller: CuichetteLandwebsiteBundle:newmessage:newmessage }
     
 cuichette_landwebsite_message:
-    path:     /message
+    path:     /message/{id}
     defaults: { _controller: CuichetteLandwebsiteBundle:message:message }
+
+cuichette_landwebsite_deletemessage:
+    path:     /message/delete/{id}
+    defaults: { _controller: CuichetteLandwebsiteBundle:deletemail:deletemail }    
+

@@ -61,14 +61,14 @@
 											</tr>
 										</thead>
 										<tbody>
-
+											{% for email in emails %}
 											<tr>
-												<td>fgognet@gmail.com</td>
-												<td>7/11/2017</td>
-												<td>Ceci est un objet</td>
-												<td><a href="/deletemessage" class="button special small">X</a></td>
+												<td>{{email[0]["mail"]}}</td>
+												<td>{{email[1]|date('Y-m-d')}}</td>
+												<td><a href="/message/{{email[3]}}">{{email[2]}}</a></td>
+												<td><a href="/message/delete/{{email[3]}}" class="button special small">X</a></td>
 											</tr>
-
+											{% endfor %}
 										</tbody>
 
 									</table>
