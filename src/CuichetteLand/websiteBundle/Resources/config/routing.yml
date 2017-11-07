@@ -29,4 +29,14 @@ cuichette_landwebsite_deleteitem:
     path:     /delete/{id}
     defaults: { _controller: CuichetteLandwebsiteBundle:delete:delete }
 
-
+cuichette_landwebsite_inbox:
+    path:     /inbox
+    defaults: { _controller: CuichetteLandwebsiteBundle:inbox:inbox }
+    
+cuichette_landwebsite_newmessage:
+    path:     /newmessage
+    defaults: { _controller: CuichetteLandwebsiteBundle:newmessage:newmessage }
+    
+cuichette_landwebsite_message:
+    path:     /message
+    defaults: { _controller: CuichetteLandwebsiteBundle:message:message }
