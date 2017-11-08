@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+	<head>
+		<title>CuichetteLand:Articles</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="/"><img src="images/logo.png" alt="" /></a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="/">Accueil</a></li>
+							<li>
+								<a href="">Accéder au magasin</a>
+								<ul>
+								{% for categorie in categories %}
+									<li><a href="">{{categorie["categorie"]}}</a></li>
+								{% endfor %}
+								</ul>
+							</li>
+							<li><a href="/inbox">Messagerie</a></li>
+							{% if user == "anon." %}
+							<li><a href="/login" class="button special">Login</a></li>
+							<li><a href="/register" class="button special">Register</a></li>
+							{% else %}
+							<li><a class="button">{{user.account}}€</a></li>
+							<li><a href="/panier">Panier</a></li>
+							<li><a href="/logout" class="button special">{{user.prenom}} - Se deconnecter</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style1">
+					<div class="container">
+						<header class="major">
+							<h2>{{produit.nom}}</h2>
+						</header>
+
+						<!-- Text -->
+							<section>
+								<h3>Petite et grande cuichette</h3>
+								<p>La <b>cuichette</b> vous permettra d'avoir un seul couvert lors de vos sorties.
+								Oubliez <i>la panique</i> lorsque vous oubliez la cuillière ! Avec nos cuichettes du deux en un ! </p>
+
+								<hr />
+
+								<header>
+										<p> Une cuillère-fourchette ou fourchette-cuillère est une forme hybride de couvert de table conçu pour remplir alternativement le rôle d'une cuillère et celui d'une fourchette. Appelé couramment "Cuichette", il adopte la forme de pelle d’une cuillère et les trois ou quatre pointes d’une fourchette.
+											Que vous l’appeliez “cuichette”  ou “fourchillère”, vous devrez bien admettre que nous devons beaucoup au génie qui a eu l’extraordinaire idée de fusionner la fourchette et la cuillère.</p>
+								</header>
+							</section>
+
+
+
+						<!-- Table -->
+							<section>
+								<div class="table-wrapper">
+									<table>
+										<thead>
+											<tr>
+												<th>Nom</th>
+												<th>Prix</th>
+												<th> Catégorie</th>
+												<th> Quantite </th>
+											</tr>
+										</thead>
+										<tbody>
+{{ form_start(form) }}
+										<tr>
+											<td>{{produit.nom}}</td>
+											<td>{{produit.prix}}€</td>
+											<td>{{produit.categorie}}</td>
+											<td>{{ form_row(form.quantite)  }}</td>
+
+											<td>{{ form_row(form.save)  }}</td>
+											{{ form_end(form) }}
+										</tr>
+										</tbody>
+										<tfoot>
+										</tfoot>
+									</table>
+								</div>
+
+							</section>
+										
+
+					</div>
+
+
+				</div>
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="copyright">
+					<li>&copy; LaTeam coorp All rights reserved.</li>
+				</ul>
+			</footer>
+		</div>
+
+	</body>
+</html>

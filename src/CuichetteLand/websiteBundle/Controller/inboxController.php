@@ -19,7 +19,7 @@ class inboxController extends Controller
 		foreach($emailsId as $emailId)
 		{
 			$email = array();
-			array_push($email, ($em->getRepository('CuichetteLandwebsiteBundle:User')-> getLoginFromId($emailId -> getIdDestinataire()))[0]);
+			array_push($email, ($em->getRepository('CuichetteLandwebsiteBundle:User')-> getLoginFromId($emailId -> getIdExpediteur()))[0]);
 			array_push($email, $emailId -> getDate());
 			array_push($email, $emailId -> getObjet());
 			array_push($email, $emailId -> getId());

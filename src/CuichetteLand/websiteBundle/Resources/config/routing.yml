@@ -1,15 +1,19 @@
 cuichette_landwebsite_homepage:
     path:     /
     defaults: { _controller: CuichetteLandwebsiteBundle:homePage:index }
-    
+
+cuichette_landwebsite_article:
+    path:     /article/{id}
+    defaults: { _controller: CuichetteLandwebsiteBundle:article:article }
+
 cuichette_landwebsite_testvending:
     path:     /test
     defaults: { _controller: CuichetteLandwebsiteBundle:testVending:testVending }
-    
+
 cuichette_landwebsite_panier:
     path:     /panier
     defaults: { _controller: CuichetteLandwebsiteBundle:panier:panier }
-    
+
 login:
     path: /login
     defaults:
