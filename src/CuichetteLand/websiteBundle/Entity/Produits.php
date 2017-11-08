@@ -50,6 +50,13 @@ class Produits
      */
 	private $quantite;
 
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="string", length=1000)
+     */
+    private $description;
+
 
     /**
      * Get id
@@ -145,7 +152,17 @@ class Produits
     public function setQuantite($quantite)
     {
         $this->quantite = $quantite;
-
+	}
+	/**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Produits
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -157,5 +174,15 @@ class Produits
     public function getQuantite()
     {
         return $this->quantite;
+	}
+	
+	/**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

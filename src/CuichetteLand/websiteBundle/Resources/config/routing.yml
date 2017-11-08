@@ -2,14 +2,9 @@ cuichette_landwebsite_homepage:
     path:     /
     defaults: { _controller: CuichetteLandwebsiteBundle:homePage:index }
 
-<<<<<<< HEAD
 cuichette_landwebsite_article:
     path:     /article/{id}
     defaults: { _controller: CuichetteLandwebsiteBundle:article:article }
-
-cuichette_landwebsite_testvending:
-    path:     /test
-    defaults: { _controller: CuichetteLandwebsiteBundle:testVending:testVending }
 
 cuichette_landwebsite_panier:
     path:     /panier
@@ -50,8 +45,7 @@ cuichette_landwebsite_deletemessage:
     path:     /message/delete/{id}
     defaults: { _controller: CuichetteLandwebsiteBundle:deletemail:deletemail }    
 
-=======
 cuichette_landwebsite_categories:
-    path:     /categories
+    path:     /categories/{categorie}
     defaults: { _controller: CuichetteLandwebsiteBundle:categoriesPage:categories }
->>>>>>> origin/Categories
+

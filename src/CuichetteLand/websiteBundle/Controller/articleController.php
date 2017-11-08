@@ -23,7 +23,7 @@ class articleController extends Controller
 		$article = $this->getDoctrine()->getManager()->getRepository('CuichetteLandwebsiteBundle:Produits')->find($id);
 		$user= $this->get('security.token_storage')->getToken()->getUser();
 		$categories = $em->getRepository('CuichetteLandwebsiteBundle:Produits')->getAllCategories();
-		
+		$pictures = $em->getRepository('CuichetteLandwebsiteBundle:Images')->getallpictures($id);
 		$Achats = new Achats();
 		$formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $Achats);
 		$formBuilder ->add('quantite', TextType::class, array(
@@ -36,8 +36,10 @@ class articleController extends Controller
 		$form = $formBuilder->getForm();
 		if ($request->isMethod('POST')) {
 			$form->handleRequest($request);
-
+			$securityContext = $this->container->get('security.authorization_checker');
 			if ($form->isValid()) {
+				if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) 
+				{
 				$Achats -> setUtilisateur( $user -> getID());
 				$Achats -> setValide ("0");
 				$Achats -> setIdarticle($article -> getId());
@@ -45,9 +47,14 @@ class articleController extends Controller
 				$em->flush();
 				$request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 				return $this->redirectToRoute('cuichette_landwebsite_panier');
-	  }
+				}
+				else
+				{
+					return $this->redirectToRoute('login');
+				}
+			}
 	}
 		return $this->render('CuichetteLandwebsiteBundle:Default:article.html.twig', 
-		array('produit' => $article, 'categories' => $categories, 'user' => $user, 'form' => $form->createView()));
+		array('produit' => $article, 'categories' => $categories, 'user' => $user, 'form' => $form->createView(), 'pictures' => $pictures));
     }
 }

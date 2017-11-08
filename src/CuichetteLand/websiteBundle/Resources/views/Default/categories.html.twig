@@ -1,114 +1,36 @@
-<!DOCTYPE HTML>
-<!--
-	Landed by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Categories - Landed by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-	</head>
-	<body>
-		<div id="page-wrapper">
-
-			<!-- Header -->
-				<header id="header">
-					<h1 id="logo"><a href="index.html">Landed</a></h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="index.html">Home</a></li>
-							<li>
-								<a href="#">Layouts</a>
-								<ul>
-									<li><a href="left-sidebar.html">Left Sidebar</a></li>
-									<li><a href="right-sidebar.html">Right Sidebar</a></li>
-									<li><a href="no-sidebar.html">No Sidebar</a></li>
-									<li>
-										<a href="#">Submenu</a>
-										<ul>
-											<li><a href="#">Option 1</a></li>
-											<li><a href="#">Option 2</a></li>
-											<li><a href="#">Option 3</a></li>
-											<li><a href="#">Option 4</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-							<li><a href="elements.html">Elements</a></li>
-							<li><a href="#" class="button special">Sign Up</a></li>
-						</ul>
-					</nav>
-				</header>
-
+			{% extends "CuichetteLandwebsiteBundle::layout.html.twig" %}
+			{% block body %}
 			<!-- Main -->
 				<div id="main" class="wrapper style1">
 					<div class="container">
 						<header class="major">
-							<h2>Les grandes cuichettes</h2>
-							<!-- <p>Ipsum dolor feugiat aliquam tempus sed magna lorem consequat accumsan</p> -->
+							<h2>Les {{categorie}}s Cuichettes</h2>
 						</header>
 
 						<!-- Text -->
 							<section>
 
-								
-
+								{% set compteur = 0 %}
+								{% for product in products %}
 								<header>
-									<h3>La Master cuichette</h3>
+									<h3>{{names[compteur][0]['nom']}}</h3>
 								</header>
-								<p><span class="image left"><img src="images/pic08.jpg" alt="" /></span>
-								<p>Une grande chuichette pour un grand festin ! Avec cette chuichette, manger en pleine nature devient un vrai plaisir. En effet, sa force, c'est sa flexibilité à s'adapter à des situations extrêmes tel qu'un poulet roti ou encore une raclette ! </p>
+								<p><div class="2u  3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="/images/cuichettes/{{images[compteur][0]['nomImage']}}" alt="images/pic04.jpg" /></span></div>
+								<p>{{description[compteur][0]['description']}}</p>
 								<div class="row">
 									
 									<div class="6u$ 12u$(xsmall)">
 										<ul class="actions fit small">
-											<li><a href="#" class="button special fit small">Acheter</a></li>
-											<li><a href="#" class="button fit small">Plus de détails</a></li>
+											<li><a href="/article/{{product["id"]}}" class="button special  small">Plus de détails</a></li>
 										</ul>
 									</div>
 								</div>
 								
 								<hr />
-								<header>
-									<h3>La Master cuichette</h3>
-								</header>
-								<p><span class="image left"><img src="images/pic08.jpg" alt="" /></span>
-								<p>Une grande chuichette pour un grand festin ! Avec cette chuichette, manger en pleine nature devient un vrai plaisir. En effet, sa force, c'est sa flexibilité à s'adapter à des situations extrêmes tel qu'un poulet roti ou encore une raclette ! </p>
-								<div class="row">
-									
-									<div class="6u$ 12u$(xsmall)">
-										<ul class="actions fit small">
-											<li><a href="#" class="button special fit small">Acheter</a></li>
-											<li><a href="#" class="button fit small">Plus de détails</a></li>
-										</ul>
-									</div>
-								</div>
+								{% set compteur = compteur + 1 %}
+								{% endfor %}
+								
 
-
-			<!-- Footer -->
-				<footer id="footer">
-					<ul class="copyright">
-						<li>&copy; LaTeam coorp All rights reserved.</li>
-					</ul>
-				</footer>
-
-		</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>
+					</div>
+				</div>
+	{% endblock %}

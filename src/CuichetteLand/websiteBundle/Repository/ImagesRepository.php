@@ -17,4 +17,11 @@ class ImagesRepository extends \Doctrine\ORM\EntityRepository
 		$query->setParameter('main', "1");
 		return $query->getResult();
 	}
+	
+	public function getallpictures($id)
+	{
+		$query = $this -> _em -> createQuery('SELECT i.nomImage FROM CuichetteLandwebsiteBundle:Images i WHERE i.idProduit = :idProduit');
+		$query->setParameter('idProduit', $id);
+		return $query->getResult();
+	}
 }

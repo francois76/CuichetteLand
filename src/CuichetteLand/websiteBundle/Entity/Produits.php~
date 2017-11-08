@@ -50,6 +50,13 @@ class Produits
      */
 	private $quantite;
 
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="string", length=1000)
+     */
+    private $description;
+
 
     /**
      * Get id
