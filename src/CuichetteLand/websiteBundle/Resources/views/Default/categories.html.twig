@@ -10,7 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
@@ -50,20 +50,20 @@
 				<div id="main" class="wrapper style1">
 					<div class="container">
 						<header class="major">
-							<h2>Les grandes cuichettes</h2>
+							<h2>Les {{categorie}}s Cuichettes</h2>
 							<!-- <p>Ipsum dolor feugiat aliquam tempus sed magna lorem consequat accumsan</p> -->
 						</header>
 
 						<!-- Text -->
 							<section>
 
-								
-
+								{% set compteur = 0 %}
+								{% for product in products %}
 								<header>
-									<h3>La Master cuichette</h3>
+									<h3>{{names[compteur][0]['nom']}}</h3>
 								</header>
-								<p><span class="image left"><img src="images/pic08.jpg" alt="" /></span>
-								<p>Une grande chuichette pour un grand festin ! Avec cette chuichette, manger en pleine nature devient un vrai plaisir. En effet, sa force, c'est sa flexibilité à s'adapter à des situations extrêmes tel qu'un poulet roti ou encore une raclette ! </p>
+								<p><div class="2u  3u$(xsmall)" style="margin: 10px; float: left;"><span class="image fit"><img src="/images/cuichettes/{{images[compteur][0]['nomImage']}}" alt="images/pic04.jpg" /></span></div>
+								<p>{{description[compteur][0]['description']}}</p>
 								<div class="row">
 									
 									<div class="6u$ 12u$(xsmall)">
@@ -75,21 +75,9 @@
 								</div>
 								
 								<hr />
-								<header>
-									<h3>La Master cuichette</h3>
-								</header>
-								<p><span class="image left"><img src="images/pic08.jpg" alt="" /></span>
-								<p>Une grande chuichette pour un grand festin ! Avec cette chuichette, manger en pleine nature devient un vrai plaisir. En effet, sa force, c'est sa flexibilité à s'adapter à des situations extrêmes tel qu'un poulet roti ou encore une raclette ! </p>
-								<div class="row">
-									
-									<div class="6u$ 12u$(xsmall)">
-										<ul class="actions fit small">
-											<li><a href="#" class="button special fit small">Acheter</a></li>
-											<li><a href="#" class="button fit small">Plus de détails</a></li>
-										</ul>
-									</div>
-								</div>
-
+								{% set compteur = compteur + 1 %}
+								{% endfor %}
+								
 
 			<!-- Footer -->
 				<footer id="footer">

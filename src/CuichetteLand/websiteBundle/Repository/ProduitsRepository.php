@@ -14,14 +14,35 @@ class ProduitsRepository extends \Doctrine\ORM\EntityRepository
 	{
 		$query = $this->_em->createQuery('SELECT DISTINCT p.categorie FROM CuichetteLandwebsiteBundle:Produits p');
 		$results = $query->getResult();
-
-  return $results;
+  		return $results;
 	}
 	
 	public function getthreeproducts($categorie)
 	{
 		$query = $this -> _em -> createQuery('SELECT p.id FROM CuichetteLandwebsiteBundle:Produits p WHERE p.categorie = :categorie') -> setMaxResults(3);
 		$query->setParameter('categorie', $categorie['categorie']);
+		return $query->getResult();
+	}
+
+	public function getallproducts($categorie)
+	{
+		$query = $this -> _em -> createQuery('SELECT p.id FROM CuichetteLandwebsiteBundle:Produits p WHERE p.categorie = :categorie');
+		$query->setParameter('categorie', $categorie);
+		return $query->getResult();
+	}
+
+
+	public function getname($id)
+	{
+		$query = $this -> _em -> createQuery('SELECT p.nom FROM CuichetteLandwebsiteBundle:Produits p WHERE p.id = :idProduit');
+		$query->setParameter('idProduit', $id);
+		return $query->getResult();
+	}
+
+	public function getdescription($id)
+	{
+		$query = $this -> _em -> createQuery('SELECT p.description FROM CuichetteLandwebsiteBundle:Produits p WHERE p.id = :idProduit');
+		$query->setParameter('idProduit', $id);
 		return $query->getResult();
 	}
 }

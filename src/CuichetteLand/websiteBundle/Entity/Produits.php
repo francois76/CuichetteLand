@@ -42,6 +42,13 @@ class Produits
      */
 	private $categorie;
 
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="string", length=1000)
+     */
+    private $description;
+
 
     /**
      * Get id
@@ -126,4 +133,28 @@ class Produits
     }
 	
 	
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Produits
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 }

@@ -3,5 +3,5 @@ cuichette_landwebsite_homepage:
     defaults: { _controller: CuichetteLandwebsiteBundle:homePage:index }
 
 cuichette_landwebsite_categories:
-    path:     /categories
+    path:     /categories/{categorie}
     defaults: { _controller: CuichetteLandwebsiteBundle:categoriesPage:categories }
