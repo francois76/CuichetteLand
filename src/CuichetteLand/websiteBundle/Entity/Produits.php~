@@ -41,6 +41,14 @@ class Produits
      * @ORM\Column(name="Categorie", type="string", length=255)
      */
 	private $categorie;
+	
+	/**
+     * @var int
+     *
+     * @ORM\Column(name="quantite", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+	private $quantite;
 
 
     /**
@@ -100,4 +108,30 @@ class Produits
     {
         return $this->prix;
     }
+
+    /**
+     * Set categorie
+     *
+     * @param string $categorie
+     *
+     * @return Produits
+     */
+    public function setCategorie($categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * Get categorie
+     *
+     * @return string
+     */
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
+	
+	
 }

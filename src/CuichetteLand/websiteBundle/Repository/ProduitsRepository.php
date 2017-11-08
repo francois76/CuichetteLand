@@ -10,4 +10,18 @@ namespace CuichetteLand\websiteBundle\Repository;
  */
 class ProduitsRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getAllCategories()
+	{
+		$query = $this->_em->createQuery('SELECT DISTINCT p.categorie FROM CuichetteLandwebsiteBundle:Produits p');
+		$results = $query->getResult();
+
+  return $results;
+	}
+	
+	public function getthreeproducts($categorie)
+	{
+		$query = $this -> _em -> createQuery('SELECT p.id FROM CuichetteLandwebsiteBundle:Produits p WHERE p.categorie = :categorie') -> setMaxResults(3);
+		$query->setParameter('categorie', $categorie['categorie']);
+		return $query->getResult();
+	}
 }
