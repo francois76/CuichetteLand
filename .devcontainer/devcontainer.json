@@ -1,0 +1,21 @@
+{
+    "name": "cuichetteland - Symfony 3.1",
+    "dockerComposeFile": [
+        "../.devcontainer/docker-compose.yml"
+    ],
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": "composer install --prefer-dist --no-interaction || true && if [ -f app/config/parameters.yml.dist ] && [ ! -f app/config/parameters.yml ]; then cp app/config/parameters.yml.dist app/config/parameters.yml; fi",
+    "forwardPorts": [
+        8000,
+        3306
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "felixfbecker.php-debug"
+            ]
+        }
+    }
+}
